@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frostbite Blog</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --ice-blue: #0f1419;
+            --frost-blue: #1a2332;
+            --arctic-blue: #2a4a6b;
+            --crystal-blue: #3d7ea6;
+            --snow-white: #e8f4fd;
+            --glacier-blue: #87ceeb;
+            --aurora-blue: #4a90e2;
+            --frozen-text: #b8dff0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--ice-blue) 0%, var(--frost-blue) 50%, var(--arctic-blue) 100%);
+            color: var(--frozen-text);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(135, 206, 235, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(74, 144, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(61, 126, 166, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .snowflake {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotateZ(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(360deg);
+            }
+        }
+        
+        header {
+            background: rgba(15, 20, 25, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(135, 206, 235, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--glacier-blue), var(--aurora-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(135, 206, 235, 0.5);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--frozen-text);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glacier-blue), transparent);
+            transition: left 0.5s;
+        }
+        
+        nav a:hover::before {
+            left: 100%;
+        }
+        
+        nav a:hover {
+            background: rgba(135, 206, 235, 0.1);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            box-shadow: 0 0 20px rgba(135, 206, 235, 0.3);
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-bar {
+            background: rgba(42, 74, 107, 0.3);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            color: var(--frozen-text);
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(135, 206, 235, 0.5);
+            border-color: var(--glacier-blue);
+        }
+        
+        .search-bar::placeholder {
+            color: rgba(184, 223, 240, 0.6);
+        }
+        
+        main {
+            padding: 4rem 0;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 4rem 0;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--snow-white), var(--glacier-blue), var(--aurora-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 50px rgba(135, 206, 235, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--frozen-text);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .blog-post {
+            background: rgba(26, 35, 50, 0.6);
+            border: 1px solid rgba(135, 206, 235, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .blog-post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--glacier-blue), var(--aurora-blue), var(--crystal-blue));
+        }
+        
+        .blog-post:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(135, 206, 235, 0.2);
+            border-color: var(--glacier-blue);
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--arctic-blue), var(--crystal-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--snow-white);
+        }
+        
+        .post-content {
+            padding: 2rem;
+        }
+        
+        .post-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--snow-white);
+            margin-bottom: 1rem;
+        }
+        
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--glacier-blue);
+        }
+        
+        .post-excerpt {
+            color: var(--frozen-text);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .read-more {
+            background: linear-gradient(45deg, var(--glacier-blue), var(--aurora-blue));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .read-more:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(135, 206, 235, 0.3);
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+        }
+        
+        .category {
+            background: rgba(42, 74, 107, 0.4);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .category:hover, .category.active {
+            background: rgba(135, 206, 235, 0.2);
+            border-color: var(--glacier-blue);
+            box-shadow: 0 5px 15px rgba(135, 206, 235, 0.2);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--frost-blue), var(--arctic-blue));
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 90%;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .close {
+            background: none;
+            border: none;
+            color: var(--glacier-blue);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close:hover {
+            color: var(--snow-white);
+            transform: scale(1.2);
+        }
+        
+        .comments-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(135, 206, 235, 0.2);
+        }
+        
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comment-form input,
+        .comment-form textarea {
+            background: rgba(42, 74, 107, 0.3);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            color: var(--frozen-text);
+            font-family: inherit;
+        }
+        
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--glacier-blue);
+            box-shadow: 0 0 15px rgba(135, 206, 235, 0.3);
+        }
+        
+        .comment-form input::placeholder,
+        .comment-form textarea::placeholder {
+            color: rgba(184, 223, 240, 0.6);
+        }
+        
+        .comment {
+            background: rgba(15, 20, 25, 0.5);
+            border-left: 3px solid var(--glacier-blue);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: var(--glacier-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .comment-text {
+            color: var(--frozen-text);
+            line-height: 1.5;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .share-btn {
+            background: rgba(42, 74, 107, 0.5);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            color: var(--frozen-text);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .share-btn:hover {
+            background: rgba(135, 206, 235, 0.2);
+            border-color: var(--glacier-blue);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background: rgba(15, 20, 25, 0.9);
+            border-top: 1px solid rgba(135, 206, 235, 0.2);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--glacier-blue);
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .footer-section a {
+            color: var(--frozen-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: var(--glacier-blue);
+        }
+        
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--frozen-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .mobile-menu {
+                display: block;
+                position: absolute;
+                right: 2rem;
+                top: 1rem;
+            }
+            
+            nav {
+                display: none;
+                width: 100%;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .search-bar {
+                width: 200px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(135, 206, 235, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(135, 206, 235, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(135, 206, 235, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="snowflakes"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">FROSTBITE</div>
+                <button class="mobile-menu" onclick="toggleNav()">☰</button>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="#" onclick="showAllPosts()">Home</a></li>
+                        <li><a href="#" onclick="showAbout()">About</a></li>
+                        <li><a href="#" onclick="showContact()">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="Search the frozen depths..." id="searchInput" onkeyup="searchPosts()">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="hero">
+                <h1>Welcome to the Ice</h1>
+                <p>Explore the frozen landscapes of technology, design, and innovation in our arctic digital realm.</p>
+            </div>
+
+            <div class="categories">
+                <div class="category active" onclick="filterPosts('all')">All Posts</div>
+                <div class="category" onclick="filterPosts('technology')">Technology</div>
+                <div class="category" onclick="filterPosts('design')">Design</div>
+                <div class="category" onclick="filterPosts('innovation')">Innovation</div>
+            </div>
+
+            <div class="blog-grid" id="blogGrid">
+                <!-- Blog posts will be dynamically inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Frostbite</h3>
+                    <p>A frozen digital realm where ideas crystallize into innovation.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#">Privacy Policy</a></p>
+                    <p><a href="#">Terms of Service</a></p>
+                    <p><a href="#">Contact Us</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow the Frost</h3>
+                    <p><a href="#">Twitter</a></p>
+                    <p><a href="#">LinkedIn</a></p>
+                    <p><a href="#">GitHub</a></p>
+                </div>
+            </div>
+            <p>&copy; 2025 Frostbite Blog. All rights reserved in the frozen realm.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for full blog post -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+            <div class="share-buttons">
+                <a href="#" class="share-btn" onclick="sharePost('twitter')">❄️ Share on Twitter</a>
+                <a href="#" class="share-btn" onclick="sharePost('linkedin')">🧊 Share on LinkedIn</a>
+                <a href="#" class="share-btn" onclick="sharePost('facebook')">⛄ Share on Facebook</a>
+            </div>
+            <div class="comments-section">
+                <h3>Comments</h3>
+                <form class="comment-form" onsubmit="addComment(event)">
+                    <input type="text" id="commentName" placeholder="Your Name" required>
+                    <textarea id="commentText" placeholder="Leave your thoughts in the frost..." rows="4" required></textarea>
+                    <button type="submit" class="read-more">Leave Comment</button>
+                </form>
+                <div id="commentsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Blog posts data
+        const blogPosts = [
+            {
+                id: 1,
+                title: "The Future of Ice Computing",
+                excerpt: "Exploring how quantum computing mirrors the crystalline structures of ice, creating unprecedented computational possibilities in sub-zero environments.",
+                content: `
+                    <p>In the frozen landscapes of technological advancement, we find ourselves at the precipice of a new era. Ice computing represents more than just a metaphor—it's a revolutionary approach to processing information at temperatures that would make traditional computers surrender.</p>
+                    
+                    <p>The crystalline structure of ice has long fascinated scientists, but only recently have we begun to understand its potential in computational applications. Just as snowflakes form unique patterns, ice computing creates distinctive processing pathways that conventional silicon-based systems cannot replicate.</p>
+                    
+                    <p>Researchers at the Arctic Technology Institute have developed prototype processors that operate optimally at -40°C, utilizing the molecular stability of frozen water to maintain quantum coherence for extended periods. This breakthrough could revolutionize everything from data centers to space exploration technology.</p>
+                    
+                    <p>The implications are staggering. Imagine data centers that don't require massive cooling systems because they thrive in sub-zero temperatures. Picture quantum computers that maintain stability through natural refrigeration, reducing energy costs by up to 90%.</p>
+                `,
+                date: "2025-06-01",
+                category: "technology",
+                icon: "❄️",
+                author: "Dr. Frost Chen"
+            },
+            {
+                id: 2,
+                title: "Designing in the Digital Arctic",
+                excerpt: "How minimalist design philosophies inspired by arctic landscapes are reshaping user interfaces and creating more intuitive digital experiences.",
+                content: `
+                    <p>The vast, pristine expanses of the Arctic have always captivated the human imagination. In recent years, designers have begun to draw inspiration from these frozen landscapes, creating digital experiences that embody the clarity, simplicity, and breathtaking beauty of ice and snow.</p>
+                    
+                    <p>Arctic design philosophy emphasizes negative space—the digital equivalent of untouched snow fields. By embracing emptiness, designers create interfaces that breathe, allowing users to focus on what truly matters without distraction.</p>
+                    
+                    <p>Color palettes inspired by polar phenomena—aurora borealis greens, glacier blues, and pristine whites—are creating emotional connections between users and digital products. These colors don't just look beautiful; they evoke feelings of calm, clarity, and wonder.</p>
+                    
+                    <p>Typography in arctic design mimics the clean lines of ice formations. Sans-serif fonts with generous spacing create the visual equivalent of fresh snow—clean, uncluttered, and infinitely peaceful.</p>
+                    
+                    <p>Motion design takes cues from falling snow and shifting ice. Gentle, organic animations replace jarring transitions, creating user experiences that feel as natural as watching aurora dance across polar skies.</p>
+                `,
+                date: "2025-05-28",
+                category: "design",
+                icon: "🎨",
+                author: "Maya Winterbourne"
+            },
+            {
+                id: 3,
+                title: "Innovation in Extreme Conditions",
+                excerpt: "Breakthrough technologies developed in polar research stations are finding unexpected applications in everyday life, from smartphones to sustainable energy.",
+                content: `
+                    <p>The world's most inhospitable environments have paradoxically become incubators for humanity's most innovative solutions. Polar research stations, operating in conditions that would challenge even the hardiest equipment, have pioneered technologies that are now revolutionizing civilian applications.</p>
+                    
+                    <p>Battery technology developed for Antarctic expeditions now powers electric vehicles with unprecedented efficiency. These batteries, designed to function at -60°C, maintain 95% capacity in conditions that would render conventional batteries useless.</p>
+                    
+                    <p>Communication systems engineered for Arctic isolation have evolved into mesh networks that provide internet access to remote communities worldwide. When traditional infrastructure fails, these ice-tested networks continue functioning, bringing connectivity to previously unreachable populations.</p>
+                    
+                    <p>Solar panels optimized for polar conditions, where sunlight comes at extreme angles and reflects off snow, have improved efficiency in conventional installations by 40%. The key breakthrough came from understanding how ice crystals scatter and amplify light.</p>
+                    
+                    <p>Insulation materials developed for polar habitats are now being integrated into smart buildings, reducing energy consumption while maintaining perfect climate control. These materials literally learned from ice—mimicking the insulating properties of snow and the structural strength of glacial formations.</p>
+                `,
+                date: "2025-05-25",
+                category: "innovation",
+                icon: "🚀",
+                author: "Prof. Arctic Thompson"
+            }
+        ];
+
+        let currentPosts = [...blogPosts];
+        let currentPostId = null;
+        let comments = {};
+
+        // Initialize the blog
+        function initBlog() {
+            displayPosts(currentPosts);
+            createSnowflakes();
+        }
+
+        // Display blog posts
+        function displayPosts(posts) {
+            const blogGrid = document.getElementById('blogGrid');
+            blogGrid.innerHTML = '';
+            
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'blog-post';
+                postElement.innerHTML = `
+                    <div class="post-image">${post.icon}</div>
+                    <div class="post-content">
+                        <h3 class="post-title">${post.title}</h3>
+                        <div class="post-meta">
+                            <span>By ${post.author}</span>
+                            <span>${new Date(post.date).toLocaleDateString()}</span>
+                        </div>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <button class="read-more" onclick="openPost(${post.id})">Read More</button>
+                    </div>
+                `;
+                blogGrid.appendChild(postElement);
+            });
+        }
+
+        // Open blog post in modal
+        function openPost(postId) {
+            const post = blogPosts.find(p => p.id === postId);
+            if (!post) return;
+            
+            currentPostId = postId;
+            document.getElementById('modalTitle').textContent = post.title;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="post-meta">
+                    <span>By ${post.author}</span>
+                    <span>${new Date(post.date).toLocaleDateString()}</span>
+                    <span>Category: ${post.category}</span>
+                </div>
+                ${post.content}
+            `;
+            
+            displayComments(postId);
+            document.getElementById('postModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('postModal').style.display = 'none';
+            currentPostId = null;
+        }
+
+        // Add comment
+        function addComment(event) {
+            event.preventDefault();
+            if (!currentPostId) return;
+            
+            const name = document.getElementById('commentName').value;
+            const text = document.getElementById('commentText').value;
+            
+            if (!comments[currentPostId]) {
+                comments[currentPostId] = [];
+            }
+            
+            comments[currentPostId].push({
+                id: Date.now(),
+                author: name,
+                text: text,
+                date: new Date().toLocaleDateString()
+            });
+            
+            displayComments(currentPostId);
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentText').value = '';
+        }
+
+        // Display comments
+        function displayComments(postId) {
+            const container = document.getElementById('commentsContainer');
+            const postComments = comments[postId] || [];
+            
+            container.innerHTML = postComments.map(comment => `
+                <div class="comment">
+                    <div class="comment-author">${comment.author} - ${comment.date}</div>
+                    <div class="comment-text">${comment.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // Filter posts by category
+        function filterPosts(category) {
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(cat => cat.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (category === 'all') {
+                currentPosts = [...blogPosts];
+            } else {
+                currentPosts = blogPosts.filter(post => post.category === category);
+            }
+            
+            displayPosts(currentPosts);
+        }
+
+        // Search functionality
+        function searchPosts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredPosts = blogPosts.filter(post => 
+                post.title.toLowerCase().includes(searchTerm) ||
+                post.excerpt.toLowerCase().includes(searchTerm) ||
+                post.content.toLowerCase().includes(searchTerm)
+            );
+            displayPosts(filteredPosts);
+        }
+
+        // Share functionality
+        function sharePost(platform) {
+            const post = blogPosts.find(p => p.id === currentPostId);
+            if (!post) return;
+            
+            const url = window.location.href;
+            const text = `Check out this amazing post: ${post.title}`;
+            
+            switch(platform) {
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+                    break;
+                case 'linkedin':
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`);
+                    break;
+                case 'facebook':
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
+                    break;
+            }
+        }
+
+        // Mobile navigation toggle
+        function toggleNav() {
+            const nav = document.getElementById('nav');
+            nav.classList.toggle('active');
+        }
+
+        // Show all posts
+        function showAllPosts() {
+            currentPosts = [...blogPosts];
+            displayPosts(currentPosts);
+            // Reset active category
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(cat => cat.classList.remove('active'));
+            categories[0].classList.add('active');
+        }
+
+        // Show about modal
+        function showAbout() {
+            document.getElementById('modalTitle').textContent = 'About Frostbite';
+            document.getElementById('modalBody').innerHTML = `
+                <div class="post-image" style="height: auto; padding: 2rem;">❄️</div>
+                <p>Welcome to Frostbite, where the digital meets the arctic. Our blog explores the intersection of technology, design, and innovation through the lens of ice and snow.</p>
+                <p>Founded in the depths of digital winter, Frostbite aims to crystallize complex ideas into beautiful, accessible content. We believe that like snowflakes, every piece of innovation is unique and worthy of exploration.</p>
+                <p>Our team of arctic explorers and digital natives brings you stories from the frozen frontiers of technology, where the most extreme conditions forge the most resilient solutions.</p>
+                <h3 style="color: var(--glacier-blue); margin: 2rem 0 1rem 0;">Our Mission</h3>
+                <p>To illuminate the path forward in our digital ice age, where innovation thrives in the most challenging conditions and beauty emerges from simplicity.</p>
+            `;
+            document.querySelector('.share-buttons').style.display = 'none';
+            document.querySelector('.comments-section').style.display = 'none';
+            document.getElementById('postModal').style.display = 'block';
+        }
+
+        // Show contact modal
+        function showContact() {
+            document.getElementById('modalTitle').textContent = 'Contact the Ice Explorers';
+            document.getElementById('modalBody').innerHTML = `
+                <div class="post-image" style="height: auto; padding: 2rem;">🧊</div>
+                <p>Ready to venture into the frozen depths of collaboration? We'd love to hear from fellow ice explorers, digital nomads, and innovation enthusiasts.</p>
+                <div style="margin: 2rem 0;">
+                    <h3 style="color: var(--glacier-blue); margin-bottom: 1rem;">Get in Touch</h3>
+                    <p><strong>Email:</strong> hello@frostbite.blog</p>
+                    <p><strong>Arctic Headquarters:</strong> Somewhere in the Digital North</p>
+                    <p><strong>Social:</strong> Follow our trail across the frozen social media landscape</p>
+                </div>
+                <form class="comment-form" style="margin-top: 2rem;">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your message from the frozen realm..." rows="4" required></textarea>
+                    <button type="submit" class="read-more">Send Message</button>
+                </form>
+            `;
+            document.querySelector('.share-buttons').style.display = 'none';
+            document.querySelector('.comments-section').style.display = 'none';
+            document.getElementById('postModal').style.display = 'block';
+        }
+
+        // Create animated snowflakes
+        function createSnowflakes() {
+            const container = document.querySelector('.snowflakes');
+            const snowflakeSymbols = ['❄', '❅', '❆', '✻', '✼', '❈', '❉', '❊'];
+            
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = snowflakeSymbols[Math.floor(Math.random() * snowflakeSymbols.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = Math.random() * 10 + 10 + 's';
+                snowflake.style.animationDelay = Math.random() * 10 + 's';
+                snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+                snowflake.style.opacity = Math.random() * 0.8 + 0.2;
+                container.appendChild(snowflake);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Click outside modal to close
+        window.onclick = function(event) {
+            const modal = document.getElementById('postModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation
+        function showLoading() {
+            const blogGrid = document.getElementById('blogGrid');
+            blogGrid.innerHTML = '<div class="loading" style="text-align: center; padding: 4rem; font-size: 2rem; color: var(--glacier-blue);">❄️ Loading frozen content...</div>';
+        }
+
+        // Enhanced search with debouncing
+        let searchTimeout;
+        function searchPosts() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    displayPosts(blogPosts);
+                    return;
+                }
+                
+                const filteredPosts = blogPosts.filter(post => 
+                    post.title.toLowerCase().includes(searchTerm) ||
+                    post.excerpt.toLowerCase().includes(searchTerm) ||
+                    post.content.toLowerCase().includes(searchTerm) ||
+                    post.author.toLowerCase().includes(searchTerm) ||
+                    post.category.toLowerCase().includes(searchTerm)
+                );
+                
+                displayPosts(filteredPosts);
+                
+                if (filteredPosts.length === 0) {
+                    document.getElementById('blogGrid').innerHTML = `
+                        <div style="text-align: center; padding: 4rem; grid-column: 1 / -1;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+                            <h3 style="color: var(--glacier-blue); margin-bottom: 1rem;">No results found in the frozen depths</h3>
+                            <p style="color: var(--frozen-text);">Try a different search term or explore our categories above.</p>
+                        </div>
+                    `;
+                }
+            }, 300);
+        }
+
+        // Add scroll animations
+        function handleScroll() {
+            const posts = document.querySelectorAll('.blog-post');
+            const windowHeight = window.innerHeight;
+            
+            posts.forEach(post => {
+                const rect = post.getBoundingClientRect();
+                if (rect.top < windowHeight - 100) {
+                    post.style.opacity = '1';
+                    post.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Initialize scroll animations
+        document.addEventListener('scroll', handleScroll);
+        
+        // Set initial state for animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const posts = document.querySelectorAll('.blog-post');
+            posts.forEach(post => {
+                post.style.opacity = '0';
+                post.style.transform = 'translateY(30px)';
+                post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            handleScroll();
+        });
+
+        // Initialize everything when page loads
+        window.addEventListener('load', function() {
+            initBlog();
+            handleScroll();
+        });
+
+        // Add some sample comments for demonstration
+        comments[1] = [
+            {
+                id: 1,
+                author: "Ice Explorer",
+                text: "Fascinating article! The potential for ice computing is truly revolutionary. Can't wait to see this technology in action.",
+                date: "2025-06-02"
+            },
+            {
+                id: 2,
+                author: "Quantum Frost",
+                text: "The comparison between ice crystals and quantum coherence is brilliant. This could change everything we know about computing.",
+                date: "2025-06-03"
+            }
+        ];
+
+        comments[2] = [
+            {
+                id: 3,
+                author: "Design Enthusiast",
+                text: "Arctic design philosophy is exactly what the digital world needs. Clean, minimal, and absolutely beautiful.",
+                date: "2025-05-29"
+            }
+        ];
+
+        comments[3] = [
+            {
+                id: 4,
+                author: "Innovation Seeker",
+                text: "It's amazing how extreme conditions drive the most innovative solutions. Nature truly is the best teacher.",
+                date: "2025-05-26"
+            }
+        ];
+    </script>
+</body>
+</html>
